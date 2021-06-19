@@ -1,6 +1,6 @@
 <%@include file="/library/taglib.jsp"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:url var="APIurl" value="/api-admin-news"/>
+<c:url var="APIurl" value="/admin-add-lesson" />
 <c:url var="NewURL" value="/admin-new"/>
 <html>
 <head>
@@ -33,7 +33,7 @@
                                 <div class="form-group">
                                     <select class="form-control" id="categoryCode" name="categoryCode">
                                         <c:if test="${empty model.categoryCode}">
-                                            <option value="">Chọn loại bài viết</option>
+                                            <option value="">Chọn chủ đề</option>
                                             <c:forEach var="item" items="${categories}">
                                                 <option value="${item.code}">${item.name}</option>
                                             </c:forEach>
@@ -48,7 +48,7 @@
                                                 >
                                                         ${item.name}</option>
                                             </c:forEach>
-                                            <option value="">Chọn loại bài viết</option>
+                                            <option value="">Chọn chủ đề</option>
                                         </c:if>
 
                                     </select>
@@ -58,29 +58,23 @@
                         <br />
                         <br />
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">Tiêu đề</label>
+                            <label class="col-sm-3 control-label no-padding-right">Hình ảnh</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="title" name="title" value="${model.title}" />
+                                <input type="text" class="form-control" id="image" name="image" value="${model.title}" />
                             </div>
                         </div>
                         <br />
                         <br />
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">Hình đại diện</label>
+                            <label class="col-sm-3 control-label no-padding-right">Âm thanh</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="thumbnall" name="thumbnall" value="" />
+                                <input type="text" class="form-control" id="sound" name="sound" value="${model.title}" />
                             </div>
                         </div>
                         <br />
                         <br />
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right">Mô tả ngắn</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="shortDescription" name="shortDescription" value="${model.shortDescription}" />
-                            </div>
-                        </div>
-                        <br />
-                        <br />
+
+
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right">Nội dung</label>
                             <div class="col-sm-9">
@@ -91,12 +85,7 @@
                         <br />
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <c:if test="${not empty model.id}">
-                                    <input type="button" class="btn btn-white btn-warning btn-bold" value="Cập nhật bài viết" id="btnAddOrUpdateNew">
-                                </c:if>
-                                <c:if test="${empty model.id}">
                                     <input type="button" class="btn btn-white btn-warning btn-bold" value="Thêm mới bài viết" id="btnAddOrUpdateNew">
-                                </c:if>
                             </div>
                         </div>
                         <input type="hidden" value="${model.id}" id="id" name="id"/>
@@ -119,12 +108,8 @@
         $.each(formData, function(v, v){
             data["" + v.name +""] = v.value;
         });
-        let id = $('#id').val();
-        if(id == "0"){
-            addNew(data);
-        }else{
-            updateNew(data);
-        }
+        data['content'] = editor.getData();
+        addNew(data)
     });
     function addNew(data){
         $.ajax({
